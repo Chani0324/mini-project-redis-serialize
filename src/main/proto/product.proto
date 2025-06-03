@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package com.mini_project.redis_serialize.presentation.protobuf;
+
+message ProductDtoMessage {
+  int64 id          = 1;
+  string name       = 2;
+  string description= 3;
+  repeated string tags       = 4;
+  int32 price       = 5;
+  string createdAt  = 6; // ISO 8601 문자열로 저장
+}
