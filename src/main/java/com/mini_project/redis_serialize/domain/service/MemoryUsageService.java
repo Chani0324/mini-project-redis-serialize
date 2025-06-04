@@ -18,7 +18,7 @@ public class MemoryUsageService {
     private final TemplateProvider templateProvider;
 
     /**
-     * INFO MEMORY 명령으로 가져온 프로퍼티들 중 지정한 필드를 반환.
+     * INFO MEMORY 명령으로 가져온 프로퍼티들 중 지정한 필드를 반환
      *
      * 예를 들어:
      *   fieldName = "used_memory" → 실제 Redis 전체 메모리(바이트) 사용량 반환
