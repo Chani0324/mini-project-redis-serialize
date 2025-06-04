@@ -6,5 +6,7 @@ import lombok.Builder;
 public record ResponseDto(String serializationType,
                           int threadCount,
                           int count,
-                          Long elapsedMillis) {
+                          long saveElapsedMillis,
+                          long readElapsedMillis,
+                          long totalMemoryBytes) {
 }

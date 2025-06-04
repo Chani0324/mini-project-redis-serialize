@@ -1,4 +1,4 @@
-package com.mini_project.redis_serialize.infra;
+package com.mini_project.redis_serialize.infra.config;
 
 import com.esotericsoftware.kryo.serializers.JavaSerializer;
 import com.mini_project.redis_serialize.presentation.dto.ProductDto;
