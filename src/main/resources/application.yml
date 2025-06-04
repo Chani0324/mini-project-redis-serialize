@@ -1,8 +1,16 @@
 spring:
   data:
     redis:
-      host: localhost
+#      host: localhost
+      host: redis
       port: 6379
+
+      lettuce:
+        pool:
+          max-active: 6
+          max-idle: 2
+          min-idle: 0
+          max-wait: 3000ms
 
   autoconfigure:
     exclude:

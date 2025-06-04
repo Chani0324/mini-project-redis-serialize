@@ -1,5 +1,6 @@
-package com.mini_project.redis_serialize.infra;
+package com.mini_project.redis_serialize.infra.config;
 
+import com.esotericsoftware.kryo.serializers.JavaSerializer;
 import com.mini_project.redis_serialize.presentation.dto.ProductDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -23,6 +24,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -116,8 +118,14 @@ public class RedisConfig {
         RedisTemplate<String, ProductDto> template = new RedisTemplate<>();
         template.setConnectionFactory(cf);
 
-        Kryo kryo = new Kryo();
-        kryo.register(ProductDto.class);
+        // ThreadLocal로 Kryo 인스턴스를 생성하도록 정의
+        ThreadLocal<Kryo> kryoHolder = ThreadLocal.withInitial(() -> {
+            Kryo kryo = new Kryo();
+            kryo.register(ProductDto.class);
+            kryo.register(LocalDateTime.class, new JavaSerializer());
+            kryo.register(ArrayList.class);
+            return kryo;
+        });
 
         RedisSerializer<ProductDto> kryoSerializer = new RedisSerializer<>() {
             @Override
@@ -125,6 +133,7 @@ public class RedisConfig {
                 if (product == null) {
                     return new byte[0];
                 }
+                Kryo kryo = kryoHolder.get();
                 try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
                      Output output = new Output(baos)) {
                     kryo.writeObject(output, product);
@@ -140,6 +149,7 @@ public class RedisConfig {
                 if (bytes == null || bytes.length == 0) {
                     return null;
                 }
+                Kryo kryo = kryoHolder.get();
                 try (ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
                      Input input = new Input(bais)) {
                     return kryo.readObject(input, ProductDto.class);
