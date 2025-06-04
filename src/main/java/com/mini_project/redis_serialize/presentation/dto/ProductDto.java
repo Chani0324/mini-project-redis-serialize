@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record ProductDto(Long id,
+public record ProductDto(long id,
                          String name,
                          String description,
                          List<String> tags,
