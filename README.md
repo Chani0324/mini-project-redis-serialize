@@ -6,20 +6,17 @@
 | Redis I/O만 비교      | 1) 단순 `SET`/`GET` 반복 <br> 2) 벤치 도구(redis-benchmark) 사용                                         | I/O 지연이 직렬화 비용에 비해 얼마나 큰 영향을 주는지 파악 (직렬화가 병목인지 파악) |
 
 
-/**
-     * 배치 저장 엔드포인트
-     *
-     * 요청 예시:
-     * POST /api/v1/products/batch
-     * Content-Type: application/json
-     *
-     * {
-     *   "serializationType": "json",
-     *   "threadCount": 10,
-     *   "count": 1000
-     * }
-     *
-     * - serializationType: "json", "gzip", "kryo", "protobuf", "msgpack" 중 하나
-     * - threadCount: Redis 저장 시 사용할 스레드 수
-     * - count: 생성해서 저장할 ProductDto 개수
-     */
+## Batch 저장 엔드포인트
+
+**Endpoint:** `POST /batch`  
+**Content-Type:** `application/json`
+
+### 요청 예시
+
+```json
+{
+  "serializationType": "json",
+  "threadCount": 10,
+  "count": 1000
+}
+```
